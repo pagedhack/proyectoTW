@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Servidor: localhost
--- Tiempo de generación: 06-04-2023 a las 03:05:03
+-- Tiempo de generación: 07-04-2023 a las 03:13:56
 -- Versión del servidor: 10.11.2-MariaDB
 -- Versión de PHP: 8.2.4
 
@@ -29,20 +29,22 @@ SET time_zone = "+00:00";
 
 CREATE TABLE `control` (
   `id` int(11) NOT NULL,
-  `fecha` date NOT NULL,
-  `temperatura` float NOT NULL,
-  `humedad` float NOT NULL,
-  `Radiacion Solar` float NOT NULL,
-  `Radiacion UV` float NOT NULL,
-  `Medicion agua` float NOT NULL
+  `fecha` date DEFAULT NULL,
+  `temperatura` float DEFAULT NULL,
+  `humedad` float DEFAULT NULL,
+  `radiacion_solar` float DEFAULT NULL,
+  `radiacion_uv` float DEFAULT NULL,
+  `medicion_agua` float DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 --
 -- Volcado de datos para la tabla `control`
 --
 
-INSERT INTO `control` (`id`, `fecha`, `temperatura`, `humedad`, `Radiacion Solar`, `Radiacion UV`, `Medicion agua`) VALUES
-(1, '2023-04-05', 20, 10, 0.4, 4, 5);
+INSERT INTO `control` (`id`, `fecha`, `temperatura`, `humedad`, `radiacion_solar`, `radiacion_uv`, `medicion_agua`) VALUES
+(1, '2023-04-05', 20, 10, 0.4, 4, 5),
+(5, '2023-04-04', 20, 20, 0.4, 4, 5),
+(6, '2023-04-01', 20, 20, 0.4, 4, 5);
 
 --
 -- Índices para tablas volcadas
