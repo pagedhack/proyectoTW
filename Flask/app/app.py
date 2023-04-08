@@ -1,13 +1,17 @@
 from flask import Flask, jsonify, request
 from flask_mysqldb import MySQL
+from flask_cors import CORS, cross_origin
 
 from config import config
 
 
 app = Flask(__name__)
 
+CORS(app)
+
 conexion = MySQL(app)
 
+@cross_origin
 @app.route('/invernadero', methods=['GET'])
 #def invernadero():
  #   return jsonify({"Control Invernadero" + "- semana 1" : control})
@@ -28,6 +32,7 @@ def listar_dias():
 def pagina_no_econtrada(error):
     return "<h1>La página que intentas buscar no existe ...</h1>", 404
 
+@cross_origin
 @app.route('/invernadero/<id>', methods=['GET'])
 def leer_control(id):
     try:
@@ -43,7 +48,7 @@ def leer_control(id):
     except Exception as ex:
         return jsonify({'mensaje': "Error"})
     
-
+@cross_origin
 @app.route('/invernadero', methods=['POST'])
 def registrar_dia():
     # print(request.json)
@@ -57,7 +62,8 @@ def registrar_dia():
         return jsonify({'mensaje': "Curso registrado."})
     except Exception as ex:
         return jsonify({'mensaje': "Error"})
-        
+
+@cross_origin   
 @app.route('/invernadero/<id>', methods=['PUT'])
 def actualizar_dia(id):
     try:
@@ -72,7 +78,7 @@ def actualizar_dia(id):
         return jsonify({'mensaje': "Error"})
 
 
-
+@cross_origin
 @app.route('/invernadero/<id>', methods=['DELETE'])
 def eliminar_curso(id):
     try:
