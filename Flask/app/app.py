@@ -1,14 +1,18 @@
 from flask import Flask, jsonify, request
 from flask_mysqldb import MySQL
+from flask_cors import CORS, cross_origin
 
 from config import config
 
 
 app = Flask(__name__)
 
+CORS(app)
+
 conexion = MySQL(app)
 
-@app.route('/invernadero', methods=['GET'])
+@cross_origin
+@app.route('/invernadero/', methods=['GET'])
 #def invernadero():
  #   return jsonify({"Control Invernadero" + "- semana 1" : control})
 def listar_dias():
@@ -21,13 +25,14 @@ def listar_dias():
         for fila in datos:
             cnt={'id':fila[0], 'fecha':fila[1],'temperatura':fila[2],'humedad':fila[3], 'radiacion_solar':fila[4], 'radiacion_uv':fila[5], 'medicion_agua':fila[6]}
             controles.append(cnt)
-        return jsonify({'controles':controles, 'mensaje':"Controles listados."})
+        return jsonify({'controles':controles, 'mensaje':"Controles listados."}) 
     except Exception as ex:
         return jsonify({'mensaje': "Error"})
 
 def pagina_no_econtrada(error):
     return "<h1>La página que intentas buscar no existe ...</h1>", 404
 
+@cross_origin
 @app.route('/invernadero/<id>', methods=['GET'])
 def leer_control(id):
     try:
@@ -43,21 +48,22 @@ def leer_control(id):
     except Exception as ex:
         return jsonify({'mensaje': "Error"})
     
-
-@app.route('/invernadero', methods=['POST'])
+@cross_origin
+@app.route('/invernadero/', methods=['POST'])
 def registrar_dia():
     # print(request.json)
     try:
         cursor = conexion.connection.cursor()
-        sql = """INSERT INTO control (id, fecha, temperatura, humedad, radiacion_solar, radiacion_uv, medicion_agua) 
-            VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}', '{6}')""".format(request.json['id'],request.json['fecha'],request.json['temperatura'],request.json['humedad'], 
+        sql = """INSERT INTO control (fecha, temperatura, humedad, radiacion_solar, radiacion_uv, medicion_agua) 
+            VALUES ('{0}', '{1}', '{2}', '{3}', '{4}', '{5}')""".format(request.json['fecha'],request.json['temperatura'],request.json['humedad'], 
                                                                                request.json['radiacion_solar'],request.json['radiacion_uv'],request.json['medicion_agua'])
         cursor.execute(sql)
         conexion.connection.commit()  # Confirma la acción de inserción.
         return jsonify({'mensaje': "Curso registrado."})
     except Exception as ex:
         return jsonify({'mensaje': "Error"})
-        
+
+@cross_origin        
 @app.route('/invernadero/<id>', methods=['PUT'])
 def actualizar_dia(id):
     try:
@@ -72,7 +78,7 @@ def actualizar_dia(id):
         return jsonify({'mensaje': "Error"})
 
 
-
+@cross_origin
 @app.route('/invernadero/<id>', methods=['DELETE'])
 def eliminar_curso(id):
     try:
